@@ -1,0 +1,2 @@
+export { RequireRole } from "./RequireRole"
+
