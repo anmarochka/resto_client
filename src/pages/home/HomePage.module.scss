@@ -1,0 +1,46 @@
+.container {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.content {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(var(--background), 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.tabsList {
+  display: flex;
+  height: 3.5rem;
+  padding: 0;
+  background-color: transparent;
+}
+
+.tab {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  color: var(--foreground);
+
+  &:hover {
+    background-color: var(--accent);
+  }
+
+  &.active {
+    border-bottom-color: var(--primary);
+    color: var(--primary);
+  }
+}
