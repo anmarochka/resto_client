@@ -1,0 +1,341 @@
+.analytics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: calc(var(--radius) - 4px);
+  border: 1px solid color-mix(in oklch, #22c55e 35%, var(--border));
+  background: color-mix(in oklch, #22c55e 12%, transparent);
+  color: #166534;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.connectionIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.metricCard {
+  padding: 1rem;
+}
+
+.metricTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.metricIconBox {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
+}
+
+.metricIconBoxGreen {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in oklch, #22c55e 14%, transparent);
+}
+
+.metricIconBoxAmber {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in oklch, #f59e0b 18%, transparent);
+}
+
+.metricIconBoxRed {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in oklch, #ef4444 14%, transparent);
+}
+
+.metricIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: #16a34a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: color-mix(in oklch, #22c55e 10%, transparent);
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.metricLabel {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.eventsCard {
+  padding: 1rem;
+}
+
+.eventsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.eventsTitle {
+  font-weight: 700;
+}
+
+.eventsBadge {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, #22c55e 10%, transparent);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #166534;
+}
+
+.eventsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.eventRow {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 4px);
+  padding: 0.75rem;
+  background: var(--card);
+}
+
+.eventTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.eventBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.badgeInfo {
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
+  color: var(--primary);
+}
+
+.badgeSuccess {
+  background: color-mix(in oklch, #22c55e 12%, transparent);
+  color: #166534;
+}
+
+.badgeDanger {
+  background: color-mix(in oklch, #ef4444 12%, transparent);
+  color: #b91c1c;
+}
+
+.badgeMuted {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.eventTime {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.eventText {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.chartCard {
+  padding: 1rem;
+}
+
+.chartHeader {
+  margin-bottom: 0.75rem;
+}
+
+.chartTitle {
+  font-weight: 700;
+}
+
+.chartSubtitle {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.axis {
+  stroke: color-mix(in oklch, var(--border) 90%, transparent);
+  stroke-width: 2;
+}
+
+.tick {
+  font-size: 12px;
+  fill: var(--muted-foreground);
+}
+
+.barBookings {
+  fill: color-mix(in oklch, var(--foreground) 92%, transparent);
+}
+
+.barGuests {
+  fill: color-mix(in oklch, var(--foreground) 55%, transparent);
+}
+
+.dot {
+  fill: color-mix(in oklch, var(--foreground) 90%, transparent);
+}
+
+.legend {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.legendSwatchBookings,
+.legendSwatchGuests {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.25rem;
+  background: color-mix(in oklch, var(--foreground) 92%, transparent);
+}
+
+.legendSwatchGuests {
+  background: color-mix(in oklch, var(--foreground) 55%, transparent);
+}
+
+.zonesCard {
+  padding: 1rem;
+}
+
+.zonesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.zoneRowTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.zoneLabel {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.zonePercent {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.progress {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: color-mix(in oklch, var(--primary) 70%, transparent);
+}
+
+.zoneTotals {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.totalItem {
+  text-align: center;
+}
+
+.totalValue {
+  font-weight: 800;
+}
+
+.totalLabel {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}

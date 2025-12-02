@@ -1,0 +1,406 @@
+.container {
+  padding: 1rem;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.content {
+  margin-top: 1.5rem;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--muted-foreground);
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--foreground);
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--accent);
+  }
+
+  &.active {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--primary);
+  }
+}
+
+.tabIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.placeholder {
+  padding: 3rem;
+  text-align: center;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  color: var(--muted-foreground);
+}
+
+.bookings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bookingsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  font-weight: 700;
+}
+
+.buttonIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.buttonIconSm {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.375rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statCard {
+  padding: 1rem;
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.statValueWarning {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #d97706;
+}
+
+.statValueSuccess {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.statValueDanger {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+.statLabel {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.filtersRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background: var(--card);
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
+}
+
+.searchIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.searchInput {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.875rem;
+}
+
+.statusSelect {
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.bookingList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bookingCard {
+  padding: 1rem;
+}
+
+.bookingTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.bookingGuest {
+  font-weight: 700;
+  margin-bottom: 0.375rem;
+}
+
+.bookingRestaurant {
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.status_pending {
+  background: color-mix(in oklch, var(--destructive) 0%, var(--muted) 100%);
+}
+
+.status_confirmed {
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
+  border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+  color: var(--primary);
+}
+
+.status_cancelled {
+  background: color-mix(in oklch, var(--destructive) 18%, transparent);
+  border-color: color-mix(in oklch, var(--destructive) 35%, var(--border));
+  color: #b91c1c;
+}
+
+.status_completed {
+  background: color-mix(in oklch, var(--muted) 90%, transparent);
+  color: var(--muted-foreground);
+}
+
+.bookingDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.detailRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+}
+
+.detailIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.tableLine {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+}
+
+.tableLabel {
+  color: var(--muted-foreground);
+}
+
+.tableValue {
+  font-weight: 700;
+}
+
+.bookingActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 1rem;
+}
+
+.createDialog {
+  padding: 0;
+}
+
+.dialogTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.closeButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: var(--muted-foreground);
+}
+
+.closeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dialogActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.createDialogShell {
+  max-width: 560px;
+}
+
+.formError {
+  color: #b91c1c;
+  font-size: 0.875rem;
+}
+
+.iconField {
+  position: relative;
+}
+
+.iconInput {
+  padding-left: 2.5rem;
+}
+
+.fieldIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
