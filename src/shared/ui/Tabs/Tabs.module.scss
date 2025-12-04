@@ -1,0 +1,44 @@
+@import '../../../app/styles/variables';
+@import '../../../app/styles/mixins';
+
+.tabs {
+  width: 100%;
+}
+
+.tabsList {
+  @include flex-center;
+  gap: $spacing-sm;
+  padding: $spacing-xs;
+  background: $muted;
+  border-radius: $radius-lg;
+}
+
+.tabsTrigger {
+  @include button-reset;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $muted-foreground;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $background;
+    color: $foreground;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &.active {
+    background: $background;
+    color: $foreground;
+    box-shadow: $shadow-sm;
+  }
+}
+
+.tabsContent {
+  margin-top: $spacing-lg;
+  @include fade-in;
+}

@@ -1,0 +1,58 @@
+@import '../../../app/styles/variables';
+@import '../../../app/styles/mixins';
+
+.popoverRoot {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  cursor: pointer;
+}
+
+.popoverContent {
+  position: absolute;
+  z-index: $z-popover;
+  background: $popover;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  padding: $spacing-md;
+  min-width: 200px;
+  @include fade-in;
+
+  // Side positioning
+  &.side-top {
+    bottom: 100%;
+    margin-bottom: $spacing-sm;
+  }
+
+  &.side-bottom {
+    top: 100%;
+    margin-top: $spacing-sm;
+  }
+
+  &.side-left {
+    right: 100%;
+    margin-right: $spacing-sm;
+  }
+
+  &.side-right {
+    left: 100%;
+    margin-left: $spacing-sm;
+  }
+
+  // Alignment
+  &.align-start {
+    left: 0;
+  }
+
+  &.align-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.align-end {
+    right: 0;
+  }
+}
