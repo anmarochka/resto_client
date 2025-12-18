@@ -4,9 +4,11 @@
   background-color: var(--background);
 }
 
+$pageMaxWidth: 42rem;
+
 .content {
   margin-top: 1.5rem;
-  max-width: 760px;
+  max-width: $pageMaxWidth;
   margin-left: auto;
   margin-right: auto;
 }
@@ -17,7 +19,7 @@
   justify-content: space-between;
   padding: 1rem 0;
   margin-bottom: 1rem;
-  max-width: 760px;
+  max-width: $pageMaxWidth;
   margin-left: auto;
   margin-right: auto;
 }
@@ -44,7 +46,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  max-width: 760px;
+  max-width: $pageMaxWidth;
   margin-left: auto;
   margin-right: auto;
 }
