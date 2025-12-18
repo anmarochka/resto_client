@@ -1,50 +1,5 @@
-// Color System - SCSS Variables
-:root {
-  // Light mode colors
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.45 0.18 262);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.01 262);
-  --secondary-foreground: oklch(0.15 0 0);
-  --muted: oklch(0.96 0.005 262);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.93 0.02 262);
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.92 0.005 262);
-  --input: oklch(0.92 0.005 262);
-  --ring: oklch(0.45 0.18 262);
-  --radius: 0.75rem;
-}
-
-.dark {
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.15 0 0);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.15 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.55 0.20 262);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.25 0.01 262);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.22 0.005 262);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.25 0.02 262);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.50 0.20 25);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.25 0.005 262);
-  --input: oklch(0.25 0.005 262);
-  --ring: oklch(0.55 0.20 262);
-}
-
+// Sass variables that reference CSS custom properties from `theme.scss`.
+// `theme.scss` is imported globally (see `src/app/styles/index.scss`).
 // Radius sizes
 $radius-sm: calc(var(--radius) - 4px);
 $radius-md: calc(var(--radius) - 2px);
