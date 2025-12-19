@@ -6,6 +6,7 @@ import { BookingFlow } from "@widgets/booking/BookingFlow"
 import { MyBookings } from "@widgets/MyBookings"
 import styles from "./HomePage.module.scss"
 import { useAppState } from "@app/providers/app-state"
+import { Button } from "@shared/ui/Button"
 
 type TabType = "book" | "mybookings"
 
@@ -41,19 +42,24 @@ export function HomePage() {
     <main className={styles.container}>
       <div className={styles.content}>
         <div className={styles.tabs}>
-          <div className={styles.tabsList}>
-            <button
-              className={`${styles.tab} ${activeTab === "book" ? styles.active : ""}`}
-              onClick={() => setActiveTab("book")}
-            >
-              Забронировать
-            </button>
-            <button
-              className={`${styles.tab} ${activeTab === "mybookings" ? styles.active : ""}`}
-              onClick={() => setActiveTab("mybookings")}
-            >
-              Мои брони
-            </button>
+          <div className={styles.tabsHeader}>
+            <div className={styles.tabsList}>
+              <button
+                className={`${styles.tab} ${activeTab === "book" ? styles.active : ""}`}
+                onClick={() => setActiveTab("book")}
+              >
+                Забронировать
+              </button>
+              <button
+                className={`${styles.tab} ${activeTab === "mybookings" ? styles.active : ""}`}
+                onClick={() => setActiveTab("mybookings")}
+              >
+                Мои брони
+              </button>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setRole(null)}>
+              Сменить роль
+            </Button>
           </div>
         </div>
 

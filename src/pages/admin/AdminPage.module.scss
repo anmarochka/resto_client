@@ -330,10 +330,15 @@ $pageMaxWidth: 42rem;
 }
 
 .dialogTop {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 1rem;
+  width: 100%;
+
+  > :first-child {
+    min-width: 0;
+  }
 }
 
 .closeButton {
@@ -392,11 +397,40 @@ $pageMaxWidth: 42rem;
   position: relative;
 }
 
-.iconInput {
+.iconField .iconInput {
   padding-left: 2.5rem;
 }
 
+.fieldIconButton {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.fieldIconButton:hover {
+  background-color: var(--accent);
+}
+
+.fieldIconButton:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .fieldIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.fieldIconStatic {
   position: absolute;
   left: 0.75rem;
   top: 50%;
@@ -405,4 +439,16 @@ $pageMaxWidth: 42rem;
   height: 1rem;
   color: var(--muted-foreground);
   pointer-events: none;
+}
+
+.pickerInput {
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &::-webkit-clear-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
 }

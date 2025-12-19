@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 import { Button } from "@shared/ui/Button"
 import { Card } from "@shared/ui/Card"
@@ -30,6 +30,8 @@ export function AdminBookingsPage() {
   const { restaurant } = useOutletContext<AdminOutletContext>()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [tables, setTables] = useState<Table[]>([])
+  const dateInputRef = useRef<HTMLInputElement>(null)
+  const timeInputRef = useRef<HTMLInputElement>(null)
 
   const [statusFilter, setStatusFilter] = useState<"all" | Booking["status"]>("all")
   const [query, setQuery] = useState("")
@@ -291,7 +293,7 @@ export function AdminBookingsPage() {
             <div className={styles.field}>
               <Label>Имя гостя</Label>
               <div className={styles.iconField}>
-                <User className={styles.fieldIcon} />
+                <User className={styles.fieldIconStatic} />
                 <Input
                   className={styles.iconInput}
                   value={createForm.userName}
@@ -303,7 +305,7 @@ export function AdminBookingsPage() {
             <div className={styles.field}>
               <Label>Телефон</Label>
               <div className={styles.iconField}>
-                <Phone className={styles.fieldIcon} />
+                <Phone className={styles.fieldIconStatic} />
                 <Input
                   className={styles.iconInput}
                   value={createForm.userPhone}
@@ -317,10 +319,25 @@ export function AdminBookingsPage() {
               <div className={styles.field}>
                 <Label>Дата</Label>
                 <div className={styles.iconField}>
-                  <Calendar className={styles.fieldIcon} />
+                  <button
+                    type="button"
+                    className={styles.fieldIconButton}
+                    onClick={() => {
+                      if (!dateInputRef.current) return
+                      if (typeof dateInputRef.current.showPicker === "function") {
+                        dateInputRef.current.showPicker()
+                      } else {
+                        dateInputRef.current.focus()
+                      }
+                    }}
+                    aria-label="Выбрать дату"
+                  >
+                    <Calendar className={styles.fieldIcon} />
+                  </button>
                   <Input
-                    className={styles.iconInput}
+                    className={`${styles.iconInput} ${styles.pickerInput}`}
                     type="date"
+                    ref={dateInputRef}
                     value={createForm.date}
                     onChange={(e) => setCreateForm((p) => ({ ...p, date: e.target.value }))}
                   />
@@ -329,10 +346,25 @@ export function AdminBookingsPage() {
               <div className={styles.field}>
                 <Label>Время</Label>
                 <div className={styles.iconField}>
-                  <Clock className={styles.fieldIcon} />
+                  <button
+                    type="button"
+                    className={styles.fieldIconButton}
+                    onClick={() => {
+                      if (!timeInputRef.current) return
+                      if (typeof timeInputRef.current.showPicker === "function") {
+                        timeInputRef.current.showPicker()
+                      } else {
+                        timeInputRef.current.focus()
+                      }
+                    }}
+                    aria-label="Выбрать время"
+                  >
+                    <Clock className={styles.fieldIcon} />
+                  </button>
                   <Input
-                    className={styles.iconInput}
+                    className={`${styles.iconInput} ${styles.pickerInput}`}
                     type="time"
+                    ref={timeInputRef}
                     value={createForm.time}
                     onChange={(e) => setCreateForm((p) => ({ ...p, time: e.target.value }))}
                   />
@@ -384,4 +416,3 @@ export function AdminBookingsPage() {
     </div>
   )
 }
-
