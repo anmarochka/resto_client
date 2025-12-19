@@ -1,5 +1,5 @@
 import type { DragEvent } from "react"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@shared/ui/Button"
 import { Card } from "@shared/ui/Card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@shared/ui/Dialog"
@@ -36,6 +36,8 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false)
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null)
   const [categoryForm, setCategoryForm] = useState({ title: "", backgroundColor: "oklch(0.98 0.005 262)" })
+  const colorPickerRef = useRef<HTMLInputElement>(null)
+  const [colorPickerValue, setColorPickerValue] = useState("#f5f5f5")
 
   const categoriesSorted = useMemo(() => categories.slice().sort((a, b) => a.order - b.order), [categories])
   const categoriesById = useMemo(() => Object.fromEntries(categories.map((c) => [c.id, c])), [categories])
@@ -68,6 +70,12 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
   useEffect(() => {
     void load()
   }, [load])
+
+  useEffect(() => {
+    if (categoryForm.backgroundColor.startsWith("#")) {
+      setColorPickerValue(categoryForm.backgroundColor)
+    }
+  }, [categoryForm.backgroundColor])
 
   const setStateDirty = () => setDirty(true)
 
@@ -532,7 +540,26 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
                   value={categoryForm.backgroundColor}
                   onChange={(e) => setCategoryForm((p) => ({ ...p, backgroundColor: e.target.value }))}
                 />
-                <div className={styles.colorPreview} style={{ background: categoryForm.backgroundColor }} />
+                <button
+                  type="button"
+                  className={styles.colorPreviewButton}
+                  onClick={() => colorPickerRef.current?.click()}
+                  aria-label="Выбрать цвет"
+                >
+                  <span className={styles.colorPreview} style={{ background: categoryForm.backgroundColor }} />
+                </button>
+                <input
+                  ref={colorPickerRef}
+                  className={styles.colorPickerInput}
+                  type="color"
+                  value={colorPickerValue}
+                  onChange={(e) => {
+                    setColorPickerValue(e.target.value)
+                    setCategoryForm((p) => ({ ...p, backgroundColor: e.target.value }))
+                  }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                />
               </div>
               <div className={styles.hint}>Используйте формат OKLCH для цвета</div>
             </div>

@@ -322,7 +322,7 @@
 
 .colorRow {
   display: grid;
-  grid-template-columns: 1fr 3rem;
+  grid-template-columns: 1fr auto;
   gap: 0.75rem;
   align-items: center;
 }
@@ -332,6 +332,31 @@
   height: 2.5rem;
   border-radius: 0.5rem;
   border: 1px solid var(--border);
+}
+
+.colorPreviewButton {
+  border: 1px solid var(--border);
+  background: var(--background);
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.colorPreviewButton:hover {
+  background: var(--accent);
+}
+
+.colorPreviewButton:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.colorPickerInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
 }
 
 .hint {
