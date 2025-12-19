@@ -235,7 +235,7 @@ export function AdminBookingsPage() {
                   <Calendar className={styles.detailIcon} />
                   <span>{formatDate(b.date)}</span>
                 </div>
-                <div className={styles.detailRow}>
+                <div className={`${styles.detailRow} ${styles.detailRowTime}`}>
                   <Clock className={styles.detailIcon} />
                   <span>{b.time}</span>
                 </div>
