@@ -330,7 +330,7 @@ export const mockFloorPlans: Record<string, Table[]> = {
   r1: [
     { id: "t1", number: 1, capacity: 2, x: 30, y: 30, status: "available", zone: "window" },
     { id: "t2", number: 2, capacity: 2, x: 150, y: 30, status: "available", zone: "window" },
-    { id: "t3", number: 3, capacity: 4, x: 270, y: 30, status: "occupied", zone: "window" },
+    { id: "t3", number: 3, capacity: 4, x: 270, y: 30, status: "reserved", zone: "window" },
     { id: "t4", number: 4, capacity: 4, x: 30, y: 130, status: "available", zone: "main" },
     { id: "t5", number: 5, capacity: 2, x: 150, y: 130, status: "available", zone: "main" },
     { id: "t6", number: 6, capacity: 6, x: 270, y: 130, status: "available", zone: "main" },
@@ -343,7 +343,7 @@ export const mockFloorPlans: Record<string, Table[]> = {
     { id: "t2", number: 2, capacity: 2, x: 150, y: 30, status: "available", zone: "window" },
     { id: "t3", number: 3, capacity: 4, x: 270, y: 30, status: "available", zone: "window" },
     { id: "t4", number: 4, capacity: 4, x: 30, y: 130, status: "available", zone: "main" },
-    { id: "t5", number: 5, capacity: 2, x: 150, y: 130, status: "occupied", zone: "main" },
+    { id: "t5", number: 5, capacity: 2, x: 150, y: 130, status: "reserved", zone: "main" },
     { id: "t6", number: 6, capacity: 6, x: 270, y: 130, status: "available", zone: "main" },
     { id: "t7", number: 7, capacity: 4, x: 30, y: 245, status: "available", zone: "vip" },
     { id: "t8", number: 8, capacity: 2, x: 150, y: 245, status: "available", zone: "vip" },
@@ -357,7 +357,7 @@ export const mockFloorPlans: Record<string, Table[]> = {
     { id: "t5", number: 5, capacity: 2, x: 150, y: 130, status: "available", zone: "main" },
     { id: "t6", number: 6, capacity: 6, x: 270, y: 130, status: "available", zone: "main" },
     { id: "t7", number: 7, capacity: 4, x: 30, y: 245, status: "available", zone: "vip" },
-    { id: "t8", number: 8, capacity: 2, x: 150, y: 245, status: "occupied", zone: "vip" },
+    { id: "t8", number: 8, capacity: 2, x: 150, y: 245, status: "reserved", zone: "vip" },
     { id: "t9", number: 9, capacity: 6, x: 270, y: 245, status: "available", zone: "vip" },
   ],
 }

@@ -412,7 +412,6 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
                       >
                         <option value="available">Доступен</option>
                         <option value="reserved">Забронирован</option>
-                        <option value="occupied">Занят</option>
                       </Select>
                     </div>
                   </div>

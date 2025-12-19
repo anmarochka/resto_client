@@ -28,7 +28,7 @@ export interface Table {
   width?: number
   height?: number
   shape?: "rectangle" | "circle"
-  status?: "available" | "occupied" | "reserved"
+  status?: "available" | "reserved"
   isAvailable?: boolean
   zone: string // categoryId
 }
