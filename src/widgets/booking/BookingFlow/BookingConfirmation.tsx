@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "@shared/ui/Button"
 import { Card } from "@shared/ui/Card"
-import { mockDataService } from "@shared/api/mockData"
-import type { Booking, Restaurant, Table } from "@shared/api/types"
+import { dataService } from "@shared/api/dataService"
+import type { Restaurant, Table } from "@shared/api/types"
 import { Calendar, Clock, MapPin, User, Users } from "lucide-react"
 import styles from "./BookingFlow.module.scss"
 
@@ -34,9 +34,9 @@ export function BookingConfirmation({ bookingData, user, onBack, onComplete }: B
 
   useEffect(() => {
     const load = async () => {
-      const r = await mockDataService.getRestaurant(bookingData.restaurantId)
+      const r = await dataService.getRestaurant(bookingData.restaurantId)
       setRestaurant(r)
-      const tables = await mockDataService.getFloorPlan(bookingData.restaurantId)
+      const tables = await dataService.getFloorPlan(bookingData.restaurantId)
       setTable(tables.find((t) => t.id === bookingData.tableId) ?? null)
     }
     void load()
@@ -71,21 +71,21 @@ export function BookingConfirmation({ bookingData, user, onBack, onComplete }: B
     setSubmitting(true)
     setError(null)
     try {
-      const userId = user?.id ?? 0
       const userName = user ? [user.first_name, user.last_name].filter(Boolean).join(" ") : undefined
 
-      const data: Omit<Booking, "id" | "createdAt"> = {
-        userId,
+      if (!table) {
+        throw new Error("Столик не найден")
+      }
+
+      await dataService.createBooking({
         restaurantId: bookingData.restaurantId,
+        hallId: table.zone,
         tableId: bookingData.tableId,
         date: bookingData.date,
         time: bookingData.time,
         guests: bookingData.guests,
-        status: "pending",
         userName,
-      }
-
-      await mockDataService.createBooking(data)
+      })
       onComplete()
     } catch (e) {
       setError(e instanceof Error ? e.message : "Не удалось создать бронирование")

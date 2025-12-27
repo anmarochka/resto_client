@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "@shared/ui/Button"
 import { Card } from "@shared/ui/Card"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { FloorCategory, Table } from "@shared/api/types"
 import { Info, Users } from "lucide-react"
 import styles from "./BookingFlow.module.scss"
@@ -26,8 +26,8 @@ export function FloorPlanView({ restaurantId, date, time, guests, onBack, onSele
       setLoading(true)
       try {
         const [data, cats] = await Promise.all([
-          mockDataService.getFloorPlan(restaurantId),
-          mockDataService.getFloorCategories(restaurantId),
+          dataService.getFloorPlan(restaurantId),
+          dataService.getFloorCategories(restaurantId),
         ])
         setTables(data)
         setCategories(cats)

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Card } from "@shared/ui/Card"
 import { Button } from "@shared/ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@shared/ui/Dialog"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { Booking, Restaurant, Table } from "@shared/api/types"
 import styles from "./MyBookings.module.scss"
 
@@ -25,14 +25,14 @@ export function MyBookings({ userId }: MyBookingsProps) {
       setLoading(true)
       try {
         const [restaurantsData, bookingsData] = await Promise.all([
-          mockDataService.getRestaurants(),
-          mockDataService.getBookings(userId),
+          dataService.getRestaurants(),
+          dataService.getBookings(userId),
         ])
         setRestaurants(restaurantsData)
         setBookings(bookingsData)
 
         const restaurantIds = Array.from(new Set(bookingsData.map((b) => b.restaurantId)))
-        const floorPlans = await Promise.all(restaurantIds.map(async (id) => [id, await mockDataService.getFloorPlan(id)] as const))
+        const floorPlans = await Promise.all(restaurantIds.map(async (id) => [id, await dataService.getFloorPlan(id)] as const))
         setTablesByRestaurant(Object.fromEntries(floorPlans))
       } finally {
         setLoading(false)
@@ -52,7 +52,7 @@ export function MyBookings({ userId }: MyBookingsProps) {
     setCancelSubmitting(true)
     try {
       setBookings((prev) => prev.map((b) => (b.id === pendingCancelId ? { ...b, status: "cancelled" } : b)))
-      await mockDataService.cancelBooking(pendingCancelId)
+      await dataService.cancelBooking(pendingCancelId)
       setCancelDialogOpen(false)
       setPendingCancelId(null)
     } finally {

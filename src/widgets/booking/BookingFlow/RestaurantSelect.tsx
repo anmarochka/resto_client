@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@shared/ui/Card"
 import { MapPin, Star, Clock } from "lucide-react"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { Restaurant } from "@shared/api/types"
 import { toast } from "@shared/lib/hooks"
 import placeholderImage from "@/assets/images/placeholder.svg"
@@ -18,7 +18,7 @@ export function RestaurantSelect({ onSelect }: RestaurantSelectProps) {
   useEffect(() => {
     const loadRestaurants = async () => {
       try {
-        const data = await mockDataService.getRestaurants()
+        const data = await dataService.getRestaurants()
         setRestaurants(data)
       } catch (error) {
         toast({

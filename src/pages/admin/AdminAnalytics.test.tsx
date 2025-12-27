@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import { AdminAnalytics } from "./AdminAnalytics"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 
 describe("AdminAnalytics", () => {
   it("renders live widgets from snapshot", async () => {
-    vi.spyOn(mockDataService, "getAnalyticsSnapshot").mockResolvedValueOnce({
+    vi.spyOn(dataService, "getAnalyticsSnapshot").mockResolvedValueOnce({
       connected: true,
       bookingsToday: 3,
       currentGuestsLoad: 14,

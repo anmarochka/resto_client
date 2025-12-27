@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { Card } from "@shared/ui/Card"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { AnalyticsEvent, AnalyticsSnapshot } from "@shared/api/types"
 import { Calendar, Clock, Star, Users, Wifi } from "lucide-react"
 import { toast } from "@shared/lib/hooks"
@@ -103,7 +103,7 @@ export function AdminAnalytics({ restaurantId }: { restaurantId: string }) {
     let alive = true
     const load = async () => {
       try {
-        const s = await mockDataService.getAnalyticsSnapshot(restaurantId)
+        const s = await dataService.getAnalyticsSnapshot(restaurantId)
         if (alive) setSnapshot(s)
       } catch (e) {
         toast({

@@ -25,12 +25,14 @@ export interface Table {
   capacity: number
   x: number
   y: number
+  positionIndex?: number
   width?: number
   height?: number
   shape?: "rectangle" | "circle"
   status?: "available" | "reserved"
   isAvailable?: boolean
   zone: string // categoryId
+  hallId?: string
 }
 
 export interface FloorCategory {

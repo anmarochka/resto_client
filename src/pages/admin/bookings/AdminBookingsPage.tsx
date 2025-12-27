@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@shared/ui/Input"
 import { Label } from "@shared/ui/Label"
 import { Select } from "@shared/ui/Select"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { Booking, Table } from "@shared/api/types"
 import { Ban, Calendar, Clock, Phone, Plus, Search, User, Users, X } from "lucide-react"
 import type { AdminOutletContext } from "../AdminLayout"
@@ -49,12 +49,12 @@ export function AdminBookingsPage() {
   })
 
   const loadBookings = useCallback(async () => {
-    const data = await mockDataService.getBookings()
+    const data = await dataService.getAdminBookings()
     setBookings(data.filter((b) => b.restaurantId === restaurant.id))
   }, [restaurant.id])
 
   const loadTables = useCallback(async () => {
-    const data = await mockDataService.getFloorPlan(restaurant.id)
+    const data = await dataService.getFloorPlan(restaurant.id)
     setTables(data)
     setCreateForm((prev) => {
       if (prev.tableId) return prev
@@ -130,14 +130,14 @@ export function AdminBookingsPage() {
     setCreateSubmitting(true)
     setCreateError(null)
     try {
-      await mockDataService.createBooking({
-        userId: 0,
-        restaurantId: restaurant.id,
+      const table = tables.find((t) => t.id === createForm.tableId)
+      if (!table) throw new Error("Столик не найден")
+      await dataService.createAdminBooking({
+        hallId: table.zone,
         tableId: createForm.tableId,
         date: createForm.date,
         time: createForm.time,
         guests: Number(createForm.guests) || 1,
-        status: "confirmed",
         userName: createForm.userName.trim(),
         userPhone: createForm.userPhone.trim(),
       })
@@ -155,7 +155,7 @@ export function AdminBookingsPage() {
 
   const handleStatus = async (id: string, status: Booking["status"]) => {
     try {
-      await mockDataService.updateBookingStatus(id, status)
+      await dataService.updateAdminBookingStatus(id, status)
       await loadBookings()
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Не удалось обновить статус"

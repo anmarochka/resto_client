@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from "react"
-import { NavLink, Outlet, useNavigate } from "react-router-dom"
-import { Button } from "@shared/ui/Button"
-import { LogOut } from "lucide-react"
-import { mockDataService } from "@shared/api/mockData"
+import { NavLink, Outlet } from "react-router-dom"
+import { dataService } from "@shared/api/dataService"
+import { getProfile } from "@shared/api/auth"
 import type { Restaurant } from "@shared/api/types"
 import { BarChart3, Calendar, LayoutGrid } from "lucide-react"
-import { useAppState } from "@app/providers/app-state"
 import styles from "./AdminPage.module.scss"
 
 export type AdminOutletContext = {
@@ -13,23 +11,25 @@ export type AdminOutletContext = {
 }
 
 export function AdminLayout() {
-  const navigate = useNavigate()
-  const { setRole } = useAppState()
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null)
 
   const loadRestaurant = useCallback(async () => {
-    const data = await mockDataService.getRestaurant("r1")
-    setRestaurant(data)
+    try {
+      const profile = await getProfile()
+      if (!profile?.restaurantId) {
+        setRestaurant(null)
+        return
+      }
+      const data = await dataService.getRestaurant(profile.restaurantId)
+      setRestaurant(data)
+    } catch {
+      setRestaurant(null)
+    }
   }, [])
 
   useEffect(() => {
     void loadRestaurant()
   }, [loadRestaurant])
-
-  const handleExit = () => {
-    setRole(null)
-    navigate("/", { replace: true })
-  }
 
   return (
     <div className={styles.container}>
@@ -38,10 +38,6 @@ export function AdminLayout() {
           <h1 className={styles.title}>{restaurant ? restaurant.name : "Загрузка..."}</h1>
           <p className={styles.subtitle}>Управление бронированиями и схемой зала</p>
         </div>
-        <Button variant="outline" size="sm" onClick={handleExit}>
-          <LogOut className={styles.icon} />
-          Сменить роль
-        </Button>
       </div>
 
       <div className={styles.tabs}>
@@ -65,4 +61,3 @@ export function AdminLayout() {
     </div>
   )
 }
-

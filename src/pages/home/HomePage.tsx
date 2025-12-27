@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useTelegram } from "@shared/lib/hooks"
-import { RoleSelector } from "@features/auth/RoleSelector"
 import { BookingFlow } from "@widgets/booking/BookingFlow"
 import { MyBookings } from "@widgets/MyBookings"
 import styles from "./HomePage.module.scss"
 import { useAppState } from "@app/providers/app-state"
-import { Button } from "@shared/ui/Button"
+import { InitDataLogin } from "@features/auth/InitDataLogin"
+import { authenticateTelegram, getProfile } from "@shared/api/auth"
 
 type TabType = "book" | "mybookings"
 
@@ -25,13 +25,35 @@ export function HomePage() {
   }, [webApp])
 
   useEffect(() => {
+    let cancelled = false
+    const bootstrapAuth = async () => {
+      if (role) return
+      if (!webApp?.initData) return
+      try {
+        await authenticateTelegram(webApp.initData)
+        const profile = await getProfile()
+        if (!cancelled && profile?.role) {
+          setRole(profile.role)
+        }
+      } catch {
+        // wait for manual initData input
+      }
+    }
+
+    void bootstrapAuth()
+    return () => {
+      cancelled = true
+    }
+  }, [role, setRole, webApp])
+
+  useEffect(() => {
     if (role === "admin") {
       navigate("/admin", { replace: true })
     }
   }, [navigate, role])
 
   if (!role) {
-    return <RoleSelector onSelectRole={setRole} />
+    return <InitDataLogin onAuthenticated={setRole} />
   }
 
   if (role === "admin") {
@@ -57,9 +79,6 @@ export function HomePage() {
                 Мои брони
               </button>
             </div>
-            <Button variant="outline" size="sm" onClick={() => setRole(null)}>
-              Сменить роль
-            </Button>
           </div>
         </div>
 

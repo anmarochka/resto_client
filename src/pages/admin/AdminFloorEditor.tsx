@@ -6,15 +6,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from "@shared/ui/Input"
 import { Label } from "@shared/ui/Label"
 import { Select } from "@shared/ui/Select"
-import { mockDataService } from "@shared/api/mockData"
+import { dataService } from "@shared/api/dataService"
 import type { FloorCategory, FloorPlanState, Table } from "@shared/api/types"
 import { ArrowDown, ArrowUp, Move, Pencil, Plus, Save, Trash2, X } from "lucide-react"
 import { toast } from "@shared/lib/hooks"
 import styles from "./AdminFloorEditor.module.scss"
 
 type DragPayload = { tableId: string; fromCategoryId: string }
-
-const createId = (prefix: string) => `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}`
 
 function moveItem<T>(list: T[], fromIndex: number, toIndex: number) {
   const next = list.slice()
@@ -50,7 +48,7 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const state = await mockDataService.getFloorPlanState(restaurantId)
+      const state = await dataService.getFloorPlanState(restaurantId)
       setCategories(state.categories)
       setTables(state.tables)
       setOrderByCategory(state.orderByCategory)
@@ -82,7 +80,7 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
   const handleSave = async () => {
     try {
       const state: FloorPlanState = { categories, tables, orderByCategory }
-      await mockDataService.saveFloorPlanState(restaurantId, state)
+      await dataService.saveFloorPlanState(restaurantId, state)
       setDirty(false)
       toast({ title: "Сохранено", description: "Схема зала обновлена.", variant: "default" })
     } catch (e) {
@@ -94,44 +92,54 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
     }
   }
 
-  const handleAddTable = () => {
+  const handleAddTable = async () => {
     const targetCategoryId = categoriesSorted[0]?.id
     if (!targetCategoryId) return
 
     const maxNumber = Math.max(0, ...tables.map((t) => t.number))
-    const id = createId("t")
+    try {
+      const nextTable = await dataService.createTable(restaurantId, {
+        hallId: targetCategoryId,
+        tableNumber: maxNumber + 1,
+        seats: 2,
+      })
 
-    const nextTable: Table = {
-      id,
-      number: maxNumber + 1,
-      capacity: 2,
-      x: 0,
-      y: 0,
-      shape: "circle",
-      status: "available",
-      zone: targetCategoryId,
+      setTables((prev) => [...prev, nextTable])
+      setOrderByCategory((prev) => ({
+        ...prev,
+        [targetCategoryId]: [...(prev[targetCategoryId] ?? []), nextTable.id],
+      }))
+      setSelectedTableId(nextTable.id)
+      setStateDirty()
+    } catch (e) {
+      toast({
+        title: "Ошибка",
+        description: e instanceof Error ? e.message : "Не удалось добавить столик",
+        variant: "destructive",
+      })
     }
-
-    setTables((prev) => [...prev, nextTable])
-    setOrderByCategory((prev) => ({
-      ...prev,
-      [targetCategoryId]: [...(prev[targetCategoryId] ?? []), id],
-    }))
-    setSelectedTableId(id)
-    setStateDirty()
   }
 
-  const handleDeleteTable = () => {
+  const handleDeleteTable = async () => {
     if (!selectedTableId || !selectedTable) return
     const tableId = selectedTableId
-    setTables((prev) => prev.filter((t) => t.id !== tableId))
-    setOrderByCategory((prev) => {
-      const next: Record<string, string[]> = {}
-      for (const [k, v] of Object.entries(prev)) next[k] = v.filter((id) => id !== tableId)
-      return next
-    })
-    setSelectedTableId(null)
-    setStateDirty()
+    try {
+      await dataService.deleteTable(restaurantId, tableId)
+      setTables((prev) => prev.filter((t) => t.id !== tableId))
+      setOrderByCategory((prev) => {
+        const next: Record<string, string[]> = {}
+        for (const [k, v] of Object.entries(prev)) next[k] = v.filter((id) => id !== tableId)
+        return next
+      })
+      setSelectedTableId(null)
+      setStateDirty()
+    } catch (e) {
+      toast({
+        title: "Ошибка",
+        description: e instanceof Error ? e.message : "Не удалось удалить столик",
+        variant: "destructive",
+      })
+    }
   }
 
   const handleDragStart = (payload: DragPayload, event: DragEvent<HTMLElement>) => {
@@ -158,7 +166,9 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
       return
     }
 
-    setTables((prev) => prev.map((t) => (t.id === tableId ? { ...t, zone: categoryId } : t)))
+    setTables((prev) =>
+      prev.map((t) => (t.id === tableId ? { ...t, zone: categoryId, hallId: categoryId } : t)),
+    )
     setOrderByCategory((prev) => {
       const fromList = prev[fromCategoryId] ?? []
       const toList = prev[categoryId] ?? []
@@ -179,7 +189,9 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
     if (!payload?.tableId) return
     const { tableId, fromCategoryId } = payload
 
-    setTables((prev) => prev.map((t) => (t.id === tableId ? { ...t, zone: categoryId } : t)))
+    setTables((prev) =>
+      prev.map((t) => (t.id === tableId ? { ...t, zone: categoryId, hallId: categoryId } : t)),
+    )
     setOrderByCategory((prev) => {
       const next: Record<string, string[]> = { ...prev }
       for (const key of Object.keys(next)) next[key] = [...(next[key] ?? [])]
@@ -232,39 +244,71 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
     setCategoryDialogOpen(true)
   }
 
-  const saveCategory = () => {
+  const saveCategory = async () => {
     const title = categoryForm.title.trim()
     const backgroundColor = categoryForm.backgroundColor.trim()
     if (!title) return
 
+    let didUpdate = false
     if (editingCategoryId) {
       setCategories((prev) => prev.map((c) => (c.id === editingCategoryId ? { ...c, title, backgroundColor } : c)))
+      didUpdate = true
     } else {
-      const maxOrder = Math.max(0, ...categories.map((c) => c.order))
-      const id = createId("cat")
-      const next: FloorCategory = { id, title, backgroundColor, order: maxOrder + 1 }
-      setCategories((prev) => [...prev, next])
-      setOrderByCategory((prev) => ({ ...prev, [id]: [] }))
+      try {
+        const created = await dataService.createFloorCategory(restaurantId, { title, backgroundColor })
+        const maxOrder = Math.max(0, ...categories.map((c) => c.order))
+        const next: FloorCategory = { ...created, order: maxOrder + 1 }
+        setCategories((prev) => [...prev, next])
+        setOrderByCategory((prev) => ({ ...prev, [next.id]: [] }))
+        didUpdate = true
+      } catch (e) {
+        toast({
+          title: "Ошибка",
+          description: e instanceof Error ? e.message : "Не удалось создать категорию",
+          variant: "destructive",
+        })
+      }
     }
     setCategoryDialogOpen(false)
     setEditingCategoryId(null)
-    setStateDirty()
+    if (didUpdate) setStateDirty()
   }
 
-  const deleteCategory = (categoryId: string) => {
+  const deleteCategory = async (categoryId: string) => {
     const remaining = categoriesSorted.filter((c) => c.id !== categoryId)
     const fallback = remaining[0]?.id
     if (!fallback) return
 
-    setTables((prev) => prev.map((t) => (t.zone === categoryId ? { ...t, zone: fallback } : t)))
-    setCategories((prev) => prev.filter((c) => c.id !== categoryId))
-    setOrderByCategory((prev) => {
-      const next = { ...prev }
-      delete next[categoryId]
-      return next
-    })
+    const nextTables = tables.map((t) =>
+      t.zone === categoryId ? { ...t, zone: fallback, hallId: fallback } : t,
+    )
+    const nextCategories = categories.filter((c) => c.id !== categoryId)
+    const nextOrder: Record<string, string[]> = {}
+    for (const [k, v] of Object.entries(orderByCategory)) {
+      if (k === categoryId) continue
+      nextOrder[k] = v
+    }
+
+    setTables(nextTables)
+    setCategories(nextCategories)
+    setOrderByCategory(nextOrder)
     if (selectedTable?.zone === categoryId) setSelectedTableId(null)
     setStateDirty()
+
+    try {
+      await dataService.saveFloorPlanState(restaurantId, {
+        categories: nextCategories,
+        tables: nextTables,
+        orderByCategory: nextOrder,
+      })
+      await dataService.deleteFloorCategory(restaurantId, categoryId)
+    } catch (e) {
+      toast({
+        title: "Ошибка",
+        description: e instanceof Error ? e.message : "Не удалось удалить категорию",
+        variant: "destructive",
+      })
+    }
   }
 
   const moveCategory = (categoryId: string, direction: "up" | "down") => {
@@ -281,6 +325,15 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
     if (!selectedTableId) return
     setTables((prev) => prev.map((t) => (t.id === selectedTableId ? { ...t, ...patch } : t)))
     setStateDirty()
+    if (patch.status) {
+      void dataService.updateTableStatus(restaurantId, selectedTableId, patch.status).catch((e) => {
+        toast({
+          title: "Ошибка",
+          description: e instanceof Error ? e.message : "Не удалось обновить статус столика",
+          variant: "destructive",
+        })
+      })
+    }
   }
 
   const updateSelectedTableCategory = (categoryId: string) => {
@@ -288,7 +341,7 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
     const fromCategoryId = selectedTable.zone
     if (fromCategoryId === categoryId) return
 
-    updateSelectedTable({ zone: categoryId })
+    updateSelectedTable({ zone: categoryId, hallId: categoryId })
     setOrderByCategory((prev) => {
       const fromList = prev[fromCategoryId] ?? []
       const toList = prev[categoryId] ?? []
