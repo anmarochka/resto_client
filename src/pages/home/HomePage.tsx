@@ -6,7 +6,6 @@ import { MyBookings } from "@widgets/MyBookings"
 import styles from "./HomePage.module.scss"
 import { useAppState } from "@app/providers/app-state"
 import { InitDataLogin } from "@features/auth/InitDataLogin"
-import { authenticateTelegram, getProfile } from "@shared/api/auth"
 
 type TabType = "book" | "mybookings"
 
@@ -23,28 +22,6 @@ export function HomePage() {
       webApp.enableClosingConfirmation()
     }
   }, [webApp])
-
-  useEffect(() => {
-    let cancelled = false
-    const bootstrapAuth = async () => {
-      if (role) return
-      if (!webApp?.initData) return
-      try {
-        await authenticateTelegram(webApp.initData)
-        const profile = await getProfile()
-        if (!cancelled && profile?.role) {
-          setRole(profile.role)
-        }
-      } catch {
-        // wait for manual initData input
-      }
-    }
-
-    void bootstrapAuth()
-    return () => {
-      cancelled = true
-    }
-  }, [role, setRole, webApp])
 
   useEffect(() => {
     if (role === "admin") {
