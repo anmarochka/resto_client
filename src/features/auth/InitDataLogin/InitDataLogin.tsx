@@ -19,6 +19,7 @@ export function InitDataLogin({ onAuthenticated }: InitDataLoginProps) {
 
   useEffect(() => {
     if (webApp?.initData) {
+      console.log("Telegram initData:", webApp.initData)
       setInitData(webApp.initData)
     }
   }, [webApp?.initData])
