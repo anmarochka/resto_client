@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000"
+const RAW_API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000"
+const API_BASE = RAW_API_BASE.startsWith("http") ? RAW_API_BASE : `https://${RAW_API_BASE}`
 const TOKEN_KEY = "rb_auth_token"
 
 export type ApiError = {
