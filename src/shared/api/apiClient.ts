@@ -25,7 +25,16 @@ export function clearToken() {
 async function parseResponse<T>(res: Response): Promise<T> {
   const text = await res.text()
   if (!text) return null as T
-  return JSON.parse(text) as T
+
+  const contentType = res.headers.get("content-type") ?? ""
+  const looksJson = contentType.includes("application/json") || text.trim().startsWith("{") || text.trim().startsWith("[")
+  if (!looksJson) return text as T
+
+  try {
+    return JSON.parse(text) as T
+  } catch {
+    return text as T
+  }
 }
 
 export async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -40,7 +49,10 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}): Pr
   const data = await parseResponse<any>(res)
 
   if (!res.ok) {
-    const message = (data as ApiError)?.message || res.statusText || "Request failed"
+    const message =
+      typeof data === "string"
+        ? data
+        : (data as ApiError)?.message || res.statusText || "Request failed"
     throw new Error(Array.isArray(message) ? message.join(", ") : message)
   }
 
