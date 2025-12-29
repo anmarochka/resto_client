@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { clearToken } from "@shared/api/apiClient"
 import { AppStateContext } from "./AppStateContext"
 import type { AppRole } from "./types"
 
@@ -11,6 +12,29 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     if (typeof window === "undefined") return
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (raw === "user" || raw === "admin") setRoleState(raw)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const clearSession = () => {
+      clearToken()
+      window.localStorage.removeItem(STORAGE_KEY)
+      setRoleState(null)
+    }
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") clearSession()
+    }
+
+    window.addEventListener("pagehide", clearSession)
+    window.addEventListener("beforeunload", clearSession)
+    document.addEventListener("visibilitychange", handleVisibility)
+
+    return () => {
+      window.removeEventListener("pagehide", clearSession)
+      window.removeEventListener("beforeunload", clearSession)
+      document.removeEventListener("visibilitychange", handleVisibility)
+    }
   }, [])
 
   const setRole = useCallback((nextRole: AppRole | null) => {
