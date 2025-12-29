@@ -3,7 +3,6 @@ import { NavLink, Outlet } from "react-router-dom"
 import { dataService } from "@shared/api/dataService"
 import { getProfile } from "@shared/api/auth"
 import type { Restaurant } from "@shared/api/types"
-import { BarChart3, Calendar, LayoutGrid } from "lucide-react"
 import styles from "./AdminPage.module.scss"
 
 export type AdminOutletContext = {
@@ -42,15 +41,12 @@ export function AdminLayout() {
 
       <div className={styles.tabs}>
         <NavLink to="/admin/bookings" className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ""}`}>
-          <Calendar className={styles.tabIcon} />
           Бронирования
         </NavLink>
         <NavLink to="/admin/floor" className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ""}`}>
-          <LayoutGrid className={styles.tabIcon} />
-          Схема зала
+          Зал
         </NavLink>
         <NavLink to="/admin/analytics" className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ""}`}>
-          <BarChart3 className={styles.tabIcon} />
           Аналитика
         </NavLink>
       </div>
