@@ -52,3 +52,34 @@
     color: var(--primary);
   }
 }
+
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background-color: var(--background);
+}
+
+.authCard {
+  width: min(420px, 100%);
+  padding: 24px;
+  text-align: center;
+}
+
+.authTitle {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.authText {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 12px;
+}
+
+.authError {
+  color: #c0392b;
+  font-size: 14px;
+}

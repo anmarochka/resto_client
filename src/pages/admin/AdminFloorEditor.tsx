@@ -456,16 +456,6 @@ export function AdminFloorEditor({ restaurantId }: { restaurantId: string }) {
                   </div>
                   <div className={styles.row2}>
                     <div className={styles.field}>
-                      <Label>Форма</Label>
-                      <Select
-                        value={selectedTable.shape ?? "circle"}
-                        onChange={(e) => updateSelectedTable({ shape: e.target.value as Table["shape"] })}
-                      >
-                        <option value="circle">Круг</option>
-                        <option value="rectangle">Прямоугольник</option>
-                      </Select>
-                    </div>
-                    <div className={styles.field}>
                       <Label>Статус</Label>
                       <Select
                         value={selectedTable.status ?? "available"}
